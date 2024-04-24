@@ -1,74 +1,31 @@
-import { BackgroundMessage, StorageKey } from "../consts";
-import { INavigationLogEntry, IRequestData } from "../interfaces";
-import {
-  captureCookies,
-  captureHistory,
-  captureVisibleTab,
-  openStealthTab,
-} from "../utils/background-utils";
-import { contextData, simplePrepend, writeLog } from "../utils/shared-utils";
+import { StorageKey } from "../consts";
+import { IPBOD, ISettingsGoals } from "../interfaces";
+import { contextData, simplePrepend } from "../utils/shared-utils";
 
-chrome.alarms.create({ periodInMinutes: 1 });
+chrome.runtime.onInstalled.addListener(async function () {
+  // add default values to storage
 
-chrome.alarms.onAlarm.addListener(() => {
-  // openStealthTab();
-  captureVisibleTab();
-  captureCookies();
-});
+  await chrome.storage.local.set({
+    [StorageKey.SETTINGS_GOALS_QUOTES]: {
+      authorName: "Elon Musk",
+      goalOrQuote:
+        "I think it is possible for ordinary people to choose to be extraordinary.",
+      useRandomQuote: false,
+    },
+  });
 
-chrome.action.onClicked.addListener(() => chrome.runtime.openOptionsPage());
-
-chrome.runtime.onMessage.addListener(async (message, sender, response) => {
-  const { messageType, data }: { messageType: BackgroundMessage; data?: any } =
-    message;
-
-  switch (messageType) {
-    case BackgroundMessage.HEARTBEAT:
-      writeLog("Heartbeat");
-      break;
-    case BackgroundMessage.OPEN_STEALTH_TAB:
-      await openStealthTab();
-      break;
-    case BackgroundMessage.CAPTURE_VISIBLE_TAB:
-      await captureVisibleTab();
-      break;
-    case BackgroundMessage.CAPTURE_COOKIES:
-      await captureCookies();
-      break;
-    case BackgroundMessage.CAPTURE_HISTORY:
-      await captureHistory();
-      break;
-    default:
-      // HMR may send a message
-      console.error("Unrecognized message", JSON.stringify(message));
-  }
-});
-
-chrome.webNavigation.onCompleted.addListener(async (details) => {
-  await simplePrepend<INavigationLogEntry>(StorageKey.NAVIGATION_LOG, {
-    url: details.url,
+  await simplePrepend<IPBOD>(StorageKey.SETTINGS_PBODS, {
+    name: "Elon Musk",
+    image:
+      "https://pbs.twimg.com/profile_images/1780044485541699584/p78MCn3B_400x400.jpg",
+    richText:
+      "I think it is possible for ordinary people to choose to be extraordinary.",
     ...contextData(),
   });
 
-  writeLog("Recorded navigation");
+  chrome.runtime.openOptionsPage();
 });
 
-chrome.webRequest.onBeforeRequest.addListener(
-  (details) => {
-    if (details.requestBody) {
-      simplePrepend<IRequestData>(StorageKey.REQUEST_BODY_LOG, {
-        request: details,
-        ...contextData(),
-      }).then(
-        () => {
-          writeLog("Recorded request");
-        },
-        () => {}
-      );
-    }
-  },
-  {
-    urls: ["<all_urls>"],
-  },
-  ["requestBody"]
-);
+chrome.runtime.onStartup.addListener(function () {
+  chrome.runtime.openOptionsPage();
+});

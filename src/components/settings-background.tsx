@@ -14,6 +14,8 @@ import { UnsplashGridGallery } from "./unsplash-grid-gallery";
 
 // Background should be limited and it should have an overlay so that
 // the text is readable.
+
+// TODO: Maintain the used background image in selection and show it in the component
 export default function SettingsBackground() {
   return (
     <SettingsLayout>
