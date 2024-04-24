@@ -70,3 +70,9 @@ export interface ISettingsBackground {
   tags?: string[];
   useDefault: boolean;
 }
+
+export interface ITodo extends IEntry {
+  text: string;
+  completed: boolean;
+  updatedAt: string;
+}

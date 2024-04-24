@@ -14,8 +14,23 @@ import { StorageKey } from "../consts";
 import { watch } from "../utils/shared-utils";
 import { Link } from "react-router-dom";
 import { UserIcon } from "lucide-react";
+import { IPBOD } from "../interfaces";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import { EditDirectorSheet } from "./edit-director-sheet";
+import { DeleteDirectorAlertDialog } from "./delete-director-alert-dialog";
+
+dayjs.extend(relativeTime);
 
 export default function SettingsPBOD() {
+  const [settingsPBOD, setSettingsPBOD] = React.useState<IPBOD[]>([]);
+
+  React.useEffect(() => {
+    watch(StorageKey.SETTINGS_PBODS, ({ newValue = [] }) => {
+      setSettingsPBOD(newValue);
+    });
+  }, []);
+
   return (
     <SettingsLayout>
       <Card>
@@ -32,23 +47,48 @@ export default function SettingsPBOD() {
               <span>Add a PBOD</span>
             </Link>
           </Button>
-          {/* {!loading && settingsPBOD && settingsPBOD?.pbods?.length === 0 ? (
-            <p>No PBODS</p>
+          {settingsPBOD && settingsPBOD.length === 0 ? (
+            <p className="my-3">No PBODS</p>
           ) : (
-            <div>
-              <p className="font-semibold">Current PBODs: </p>
+            <div className="my-3">
+              <p className="font-semibold ">Current PBODs: </p>
               <ul>
-                {settingsPBOD?.pbods?.map((pbod) => (
-                  <li key={pbod.name}>{pbod.name}</li>
+                {settingsPBOD?.map((pbod) => (
+                  <PBODItem key={pbod.uuid} {...pbod} />
                 ))}
               </ul>
             </div>
-          )} */}
+          )}
         </CardContent>
         <CardFooter className="border-t px-6 py-4">
           <Button>Save</Button>
         </CardFooter>
       </Card>
     </SettingsLayout>
+  );
+}
+
+export function PBODItem({ name, timestamp, image, richText, uuid }: IPBOD) {
+  return (
+    <Card className="mb-3 w-full max-w-lg">
+      <CardHeader className="flex flex-row justify-between items-baseline">
+        <div>
+          <CardTitle className="text-lg">{name}</CardTitle>
+          <CardDescription>
+            created {dayjs(timestamp).fromNow()}
+          </CardDescription>
+        </div>
+        <div className="space-x-2">
+          <EditDirectorSheet
+            name={name}
+            timestamp={timestamp}
+            uuid={uuid}
+            image={image}
+            richText={richText}
+          />
+          <DeleteDirectorAlertDialog uuid={uuid} />
+        </div>
+      </CardHeader>
+    </Card>
   );
 }

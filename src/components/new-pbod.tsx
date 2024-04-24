@@ -19,6 +19,7 @@ import { Textarea } from "./ui/textarea";
 
 export default function NewPBOD() {
   const navigate = useNavigate();
+
   const [PBOD, setPBOD] = React.useState<IPBOD>({
     name: "",
     image: "",
@@ -27,7 +28,7 @@ export default function NewPBOD() {
     uuid: contextData().uuid,
   });
 
-  async function addNote() {
+  async function addPBOD() {
     if (!PBOD.name || !PBOD.image || !PBOD.richText) {
       toast({
         title: "Error",
@@ -46,9 +47,6 @@ export default function NewPBOD() {
     });
 
     navigate("/");
-
-    // Fix: not working
-    chrome.runtime.openOptionsPage();
   }
 
   return (
@@ -76,7 +74,7 @@ export default function NewPBOD() {
         </CardContent>
 
         <CardFooter className="border-t px-6 py-4">
-          <Button onClick={addNote}>Save</Button>
+          <Button onClick={addPBOD}>Save</Button>
         </CardFooter>
       </Card>
     </SettingsLayout>

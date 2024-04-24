@@ -30,6 +30,7 @@ export function SettingsLayout({ children }: { children: React.ReactNode }) {
               <Link className={isActiveClassName("pbod")} to="/settings/pbod">
                 Personal Board Of Directors
               </Link>
+              <Link to="/">Go to home page</Link>
             </nav>
             <div className="grid gap-6">{children}</div>
           </div>

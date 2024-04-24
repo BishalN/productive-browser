@@ -43,6 +43,7 @@ export enum StorageKey {
 
   // for random quote selection
   PBODS_QUOTES = "PBODS_QUOTES",
+  TODOS = "TODOS",
 }
 
 export enum SearchParamKey {

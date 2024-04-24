@@ -12,21 +12,23 @@ import {
 } from "./ui/alert-dialog";
 import { Button } from "./ui/button";
 import { TrashIcon } from "lucide-react";
-import { ITodo } from "../interfaces";
+import { IPBOD } from "../interfaces";
 import { watch } from "../utils/shared-utils";
 import { StorageKey } from "../consts";
 
-export function DeleteTodoAlertDialog({ uuid }: { uuid: string }) {
-  const [todos, setTodos] = React.useState<ITodo[]>([]);
+export function DeleteDirectorAlertDialog({ uuid }: { uuid: string }) {
+  const [directors, setDirectors] = React.useState<IPBOD[]>([]);
   React.useEffect(() => {
-    watch(StorageKey.TODOS, ({ newValue = [] }) => {
-      setTodos(newValue);
+    watch(StorageKey.SETTINGS_PBODS, ({ newValue = [] }) => {
+      setDirectors(newValue);
     });
   }, []);
 
-  async function deleteTodo() {
-    const updatedTodos = todos.filter((t) => t.uuid !== uuid);
-    await chrome.storage.local.set({ [StorageKey.TODOS]: updatedTodos });
+  async function deleteDirector() {
+    const updatedDirectors = directors.filter((t) => t.uuid !== uuid);
+    await chrome.storage.local.set({
+      [StorageKey.SETTINGS_PBODS]: updatedDirectors,
+    });
   }
   return (
     <AlertDialog>
@@ -46,7 +48,9 @@ export function DeleteTodoAlertDialog({ uuid }: { uuid: string }) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={deleteTodo}>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={deleteDirector}>
+            Continue
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
