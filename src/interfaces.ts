@@ -62,6 +62,7 @@ export interface ISettingsGoals {
 }
 
 export interface ISettingsBackground {
+  id: string;
   url: string;
   height?: number;
   width?: number;

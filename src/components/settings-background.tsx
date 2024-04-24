@@ -9,7 +9,6 @@ import {
   CardContent,
   CardFooter,
 } from "./ui/card";
-import { Checkbox } from "./ui/checkbox";
 import { SettingsLayout } from "./layout/settings";
 import { UnsplashGridGallery } from "./unsplash-grid-gallery";
 
@@ -27,22 +26,8 @@ export default function SettingsBackground() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-2">
-            <UnsplashGridGallery />
-            <div className="flex items-center space-x-2">
-              <Checkbox id="include" />
-              <label
-                htmlFor="include"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Use default gradiet background
-              </label>
-            </div>
-          </form>
+          <UnsplashGridGallery />
         </CardContent>
-        <CardFooter className="border-t px-6 py-4">
-          <Button>Save</Button>
-        </CardFooter>
       </Card>
     </SettingsLayout>
   );
