@@ -3,6 +3,11 @@ interface ILogEntry {
   timestamp: string;
 }
 
+interface IEntry {
+  uuid: string;
+  timestamp: string;
+}
+
 export interface IActivityLogEntry extends ILogEntry {
   message: string;
 }
@@ -36,10 +41,35 @@ export interface IRequestData extends ILogEntry {
 }
 
 export interface IClipboardData extends ILogEntry {
-    text: string;
-    url: string;
+  text: string;
+  url: string;
 }
 
 export interface INoteEntry extends ILogEntry {
   text: string;
+}
+
+export interface IPBOD extends IEntry {
+  name: string;
+  image?: string;
+  richText?: string;
+}
+
+export interface ISettingsGoals {
+  goalOrQuote: string;
+  authorName: string;
+  useRandomQuote: boolean;
+}
+
+export interface ISettingsBackground {
+  url: string;
+  height?: number;
+  width?: number;
+  description?: string;
+  tags?: string[];
+  useDefault: boolean;
+}
+
+export interface ISettingsPBOD {
+  pbods: IPBOD[];
 }

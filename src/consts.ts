@@ -11,10 +11,6 @@ export const SECTION_NAMES = [
   "Native apps",
 ];
 
-// Clipboard
-
-// Downloads can already see existing downloads, download additional with same name?
-
 export enum BackgroundMessage {
   HEARTBEAT = "HEARTBEAT",
   UPDATE_GEOLOCATION = "UPDATE_GEOLOCATION",
@@ -39,6 +35,14 @@ export enum StorageKey {
   INPUTS = "INPUTS",
   NOTES = "NOTES",
   CLIPBOARD_LOG = "CLIPBOARD_LOG",
+
+  // Settings
+  SETTINGS_GOALS_QUOTES = "SETTINGS_GOALS_QUOTES",
+  SETTINGS_BACKGROUND = "SETTINGS_BACKGROUND",
+  SETTINGS_PBODS = "SETTINGS_PBODS",
+
+  // for random quote selection
+  PBODS_QUOTES = "PBODS_QUOTES",
 }
 
 export enum SearchParamKey {
