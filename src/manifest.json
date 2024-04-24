@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "version": "0.0.0",
+  "name": "Productive Browser",
+  "description": "The most productive Chrome extension ever",
+  "background": {
+    "service_worker": "background/background.ts",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup/index.html"
+  },
+  "options_ui": {
+    "open_in_tab": true,
+    "page": "options/index.html"
+  },
+  "incognito": "spanning",
+  "web_accessible_resources": [
+    {
+      "resources": ["*"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "permissions": ["storage"],
+  "icons": {
+    "16": "images/hacker_16.png",
+    "48": "images/hacker_48.png",
+    "64": "images/hacker_64.png",
+    "128": "images/hacker_128.png"
+  }
+}
