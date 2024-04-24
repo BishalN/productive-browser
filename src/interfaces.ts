@@ -70,7 +70,3 @@ export interface ISettingsBackground {
   tags?: string[];
   useDefault: boolean;
 }
-
-export interface ISettingsPBOD {
-  pbods: IPBOD[];
-}
