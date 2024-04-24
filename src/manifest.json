@@ -23,9 +23,9 @@
   ],
   "permissions": ["storage"],
   "icons": {
-    "16": "images/hacker_16.png",
-    "48": "images/hacker_48.png",
-    "64": "images/hacker_64.png",
-    "128": "images/hacker_128.png"
+    "16": "images/icon16.png",
+    "48": "images/icon32.png",
+    "64": "images/icon48.png",
+    "128": "images/icon128.png"
   }
 }
