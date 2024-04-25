@@ -1,6 +1,6 @@
 {
   "name": "productive-browser",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "The most Productive Chrome extension ever",
   "scripts": {
     "start": "parcel watch src/manifest.json --host localhost --config @parcel/config-webextension --no-content-hash --no-cache",
