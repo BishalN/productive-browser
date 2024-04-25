@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "./ui/button";
 import { ArrowRightIcon } from "lucide-react";
 
-export default function Notes() {
+export default function Popup() {
   return (
     <div className="flex flex-col justify-center px-2 h-screen space-y-10 rounded-lg border-4 bg-gray-100">
       <h1 className="text-center font-bold bg-white">Productive Browser</h1>

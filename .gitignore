@@ -4,3 +4,9 @@ node_modules/
 .parcel-cache/
 
 .env
+
+*.zip
+
+keys.json
+
+key.pem

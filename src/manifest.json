@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "name": "Productive Browser",
   "description": "The most productive Chrome extension ever",
   "background": {
