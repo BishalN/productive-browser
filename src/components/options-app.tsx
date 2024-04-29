@@ -58,9 +58,27 @@ export default function OptionsApp() {
       uuid: "",
     });
   }
+
+  const handleLogin = () => {
+    chrome.identity.getAuthToken({ interactive: true }, (token) => {
+      if (token) {
+        chrome.identity.getProfileUserInfo(
+          { accountStatus: chrome.identity.AccountStatus.ANY },
+          (info) => {
+            console.log(info);
+            // may be add this info to local storage even though its not important since\
+            // its cached already i.e idempotent
+          }
+        );
+      }
+    });
+  };
   return (
     <main className="bg-gradient-to-tr from-gray-900 via-white to-gray-50 h-screen">
       <div className="flex flex-col justify-center items-center my-10">
+        <Button onClick={handleLogin} className="my-3">
+          Login with google
+        </Button>
         <h1 className="bg-gray-300 px-1 rounded-md font-bold">
           Productive Browser
         </h1>

@@ -29,3 +29,22 @@ chrome.runtime.onInstalled.addListener(async function () {
 chrome.runtime.onStartup.addListener(function () {
   chrome.runtime.openOptionsPage();
 });
+
+// when the action is clicked, start oauth flow
+chrome.action.onClicked.addListener(async function () {
+  chrome.identity.getAuthToken({ interactive: true }, (token) => {
+    if (token) {
+      chrome.identity.getProfileUserInfo(
+        { accountStatus: chrome.identity.AccountStatus.ANY },
+        (info) => {
+          console.log(info);
+          // may be add this info to local storage even though its not important since\
+          // its cached already i.e idempotent
+          if (info) {
+            chrome.runtime.openOptionsPage();
+          }
+        }
+      );
+    }
+  });
+});
