@@ -6,7 +6,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { DeleteTodoAlertDialog } from "./delete-todo-alert-dialog";
 import { EditTodoDialog } from "./edit-todo-dialog";
 import { DirectorSheet } from "./director-sheet";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import { IPBOD, ISettingsGoals, ITodo } from "../interfaces";
 import { contextData, simplePrepend, watch } from "../utils/shared-utils";
 import { StorageKey } from "../consts";
@@ -73,11 +73,96 @@ export default function OptionsApp() {
       }
     });
   };
+
+  //TODO: we usually handle all the login redirection to the backend server though
+  const handleWebAuthFlow = () => {
+    const clientId =
+      "987445278418-81himrp5822cib1vtgbn9bk7eqqt93js.apps.googleusercontent.com";
+    const extensionRedirectUri = chrome.identity.getRedirectURL();
+    const nonce = Math.random().toString(36).substring(2, 15);
+    const authUrl = new URL("https://accounts.google.com/o/oauth2/v2/auth");
+    // Define fields for OpenID
+    authUrl.searchParams.set("client_id", clientId);
+    authUrl.searchParams.set("response_type", "id_token");
+    authUrl.searchParams.set("redirect_uri", extensionRedirectUri);
+
+    authUrl.searchParams.set("scope", "openid profile email");
+    authUrl.searchParams.set("nonce", nonce);
+    authUrl.searchParams.set("prompt", "consent");
+
+    chrome.identity.launchWebAuthFlow(
+      {
+        url: authUrl.href,
+        interactive: true,
+      },
+      (redirectUrl) => {
+        if (redirectUrl) {
+          // The ID token is in the URL hash
+          const urlHash = redirectUrl.split("#")[1];
+          const params = new URLSearchParams(urlHash);
+          const jwt = params.get("id_token");
+          // Parse the JSON Web Token
+          const base64Url = jwt.split(".")[1];
+          const base64 = base64Url.replace("-", "+").replace("_", "/");
+          const token = JSON.parse(atob(base64));
+          console.log(token);
+        }
+      }
+    );
+  };
+
+  const handleGithubAuthFlow = () => {
+    const clientId = "Iv1.c939a2b5fd4967ad";
+    const extensionRedirectUri = chrome.identity.getRedirectURL();
+    const authUrl = new URL("https://github.com/login/oauth/authorize");
+    authUrl.searchParams.set("client_id", clientId);
+    authUrl.searchParams.set("redirect_uri", extensionRedirectUri);
+
+    chrome.identity.launchWebAuthFlow(
+      {
+        url: authUrl.href,
+        interactive: true,
+      },
+      async (redirectUrl) => {
+        if (redirectUrl) {
+          const queryString = new URL(redirectUrl).search;
+          const params = new URLSearchParams(queryString);
+          const code = params.get("code");
+          const authUrl = new URL(
+            "https://github.com/login/oauth/access_token"
+          );
+          authUrl.searchParams.append("client_id", clientId);
+          authUrl.searchParams.append("redirect_uri", extensionRedirectUri);
+          authUrl.searchParams.append(
+            "client_secret",
+            "your_client_secret_here"
+          );
+          authUrl.searchParams.append("code", code);
+          const response = await fetch(authUrl, {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+            },
+          });
+          const accessTokenData = await response.json();
+          const r = await fetch("https://api.github.com/user", {
+            headers: {
+              Authorization: "Bearer " + accessTokenData.access_token,
+            },
+          });
+          console.log(await r.json());
+        }
+      }
+    );
+  };
   return (
     <main className="bg-gradient-to-tr from-gray-900 via-white to-gray-50 h-screen">
       <div className="flex flex-col justify-center items-center my-10">
-        <Button onClick={handleLogin} className="my-3">
+        <Button onClick={handleWebAuthFlow} className="my-3">
           Login with google
+        </Button>
+        <Button onClick={handleGithubAuthFlow} className="my-3">
+          Login with github
         </Button>
         <h1 className="bg-gray-300 px-1 rounded-md font-bold">
           Productive Browser
