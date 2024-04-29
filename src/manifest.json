@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "version": "1.0.2",
+  "version": "1.0.3",
   "name": "Productive Browser",
-  "description": "The most productive Chrome extension ever",
+  "description": "The most productive extension ever",
   "background": {
     "service_worker": "background/background.ts",
     "type": "module"
